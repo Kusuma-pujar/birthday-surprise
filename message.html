@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎂</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Pacifico', cursive;
+      background: radial-gradient(circle at top, #fff0f5, #ffe4e1);
+      overflow-x: hidden;
+      text-align: center;
+      padding-top: 40px;
+      color: #d63384;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin: 0 20px;
+      animation: bounce 1.5s infinite alternate;
+      text-shadow: 2px 2px 4px #fff;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin: 15px 20px;
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+
+    .cake-container {
+      margin: 25px auto;
+      cursor: pointer;
+      width: 90%;
+      max-width: 240px;
+      transition: transform 0.3s ease;
+      z-index: 10;
+      position: relative;
+    }
+
+    .cake-container:hover {
+      transform: scale(1.08);
+    }
+
+    .flame {
+      animation: flicker 0.2s infinite alternate;
+      transform-origin: center;
+      filter: drop-shadow(0 0 8px orange);
+    }
+
+    @keyframes flicker {
+      from { transform: scale(1); }
+      to { transform: scale(1.2) rotate(3deg); }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .fade-message {
+      font-size: 1.3rem;
+      margin: 25px 20px 0;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    .fade-message.show {
+      opacity: 1;
+    }
+
+    /* Sparkle Trail */
+    .sparkle {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: sparkle-fade 1s linear forwards;
+    }
+
+    @keyframes sparkle-fade {
+      to {
+        transform: scale(0);
+        opacity: 0;
+      }
+    }
+
+    /* Balloons */
+    .balloon {
+      position: absolute;
+      width: 30px;
+      height: 40px;
+      background: red;
+      border-radius: 50%;
+      animation: floatBalloon 10s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes floatBalloon {
+      0% { bottom: -40px; opacity: 0.7; }
+      100% { bottom: 100%; opacity: 0; }
+    }
+
+    /* Twinkling Stars */
+    .star {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite ease-in-out alternate;
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.2; }
+      to { opacity: 1; transform: scale(1.3); }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    @media (max-width: 500px) {
+      h1 { font-size: 1.8rem; }
+      p, .fade-message { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Many more happy returns of the day dear 🎂</h1>
+  <p>Click the cake to see surprise✨</p>
+
+  <div class="cake-container" onclick="blowCandles()">
+    <svg viewBox="0 0 200 250" width="100%">
+      <!-- Cake layers -->
+      <rect x="40" y="130" rx="15" ry="15" width="120" height="30" fill="#ff99c8" />
+      <rect x="50" y="110" rx="10" ry="10" width="100" height="30" fill="#ffc9de" />
+      <rect x="60" y="90" rx="8" ry="8" width="80" height="30" fill="#ffe0f0" />
+      <!-- Top icing -->
+      <ellipse cx="100" cy="88" rx="45" ry="10" fill="#fff0f5" />
+      <circle cx="75" cy="85" r="3" fill="#ff69b4" />
+      <circle cx="90" cy="86" r="3" fill="#ff69b4" />
+      <circle cx="105" cy="85" r="3" fill="#ff69b4" />
+      <circle cx="120" cy="84" r="3" fill="#ff69b4" />
+      <!-- Candles -->
+      <g id="candles">
+        <rect x="70" y="65" width="6" height="25" fill="#fdd835" />
+        <circle cx="73" cy="60" r="5" fill="orange" class="flame" id="flame1" />
+        <rect x="98" y="65" width="6" height="25" fill="#4fc3f7" />
+        <circle cx="101" cy="60" r="5" fill="orange" class="flame" id="flame2" />
+        <rect x="126" y="65" width="6" height="25" fill="#ab47bc" />
+        <circle cx="129" cy="60" r="5" fill="orange" class="flame" id="flame3" />
+      </g>
+      <!-- Cake shadow -->
+      <ellipse cx="100" cy="170" rx="50" ry="6" fill="#e4a1c1" opacity="0.4" />
+    </svg>
+  </div>
+
+  <p class="fade-message" id="fadeMsg">💖From the silliest inside jokes to the deepest heart-to-hearts, you’ve always been there, and I’m beyond grateful for your friendship 💕. You are loved more than you know 💖</p>
+
+  <iframe src="player.html" allow="autoplay" style="display:none;" id="musicPlayer"></iframe>
+
+  <audio id="blow-sound">
+    <source src="blow.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- Confetti -->
+  <canvas id="confetti-canvas"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+  <script>
+    function blowCandles() {
+      document.getElementById("blow-sound").play();
+      ["flame1", "flame2", "flame3"].forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+      });
+
+      document.getElementById("fadeMsg").classList.add("show");
+
+      confetti({
+        particleCount: 200,
+        spread: 100,
+        origin: { y: 0.6 }
+      });
+
+      for (let i = 0; i < 20; i++) {
+        const balloon = document.createElement("div");
+        balloon.className = "balloon";
+        balloon.style.left = Math.random() * 100 + "vw";
+        balloon.style.background = `hsl(${Math.random() * 360}, 80%, 70%)`;
+        balloon.style.animationDelay = (Math.random() * 2) + "s";
+        document.body.appendChild(balloon);
+      }
+
+      setTimeout(() => {
+        window.location.href = "wish.html";
+      }, 10000);
+    }
+
+    // Sparkles on mousemove
+    document.addEventListener("mousemove", (e) => {
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle";
+      sparkle.style.left = e.pageX + "px";
+      sparkle.style.top = e.pageY + "px";
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 1000);
+    });
+
+    // Stars
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.top = Math.random() * 100 + "vh";
+      star.style.left = Math.random() * 100 + "vw";
+      star.style.animationDelay = Math.random() * 3 + "s";
+      document.body.appendChild(star);
+    }
+  </script>
+
+</body>
+</html>

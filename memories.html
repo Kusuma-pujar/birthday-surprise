@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📸 Sweet Memories</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Pacifico', cursive;
+      background: linear-gradient(135deg, #ffe0f0, #fdf0ff, #ffe8f0);
+      background-size: 400% 400%;
+      animation: bgAnimate 20s ease infinite;
+      overflow-x: hidden;
+      text-align: center;
+      padding: 30px 10px;
+      color: #ff4d88;
+    }
+
+    @keyframes bgAnimate {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px white;
+    }
+
+    .slideshow-container {
+      width: 90%;
+      max-width: 320px;
+      height: auto;
+      aspect-ratio: 3 / 4;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      background-color: #fff;
+    }
+
+    .slide-wrapper {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide-wrapper.active {
+      opacity: 1;
+      z-index: 2;
+    }
+
+    .slide-wrapper img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 15px;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .slide-wrapper img:hover {
+      transform: scale(1.03);
+    }
+
+    .star {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: white;
+      border-radius: 50%;
+      animation: sparkle 2s infinite alternate;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    @keyframes sparkle {
+      0% { opacity: 0.1; }
+      100% { opacity: 1; transform: scale(1.4); }
+    }
+
+    .signature {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      left: auto;
+      font-size: 1rem;
+      font-family: 'Pacifico', cursive;
+      color: #ff69b4;
+      opacity: 0.8;
+      z-index: 10;
+      animation: fadeInUp 2s ease-in-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .signature {
+        font-size: 0.9rem;
+        bottom: 15px;
+        right: 15px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      h1 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1> Sweet Memories Together 📸💖</h1>
+
+  <div class="slideshow-container" id="slideshow">
+    <div class="slide-wrapper active"><img src="IMG-20200512-WA0135.jpg" alt="Memory 1"></div>
+    <div class="slide-wrapper"><img src="Screenshot_2020-06-03-17-08-10.png" alt="Memory 2"></div>
+    <div class="slide-wrapper"><img src="Snapchat-2085460143.jpg" alt="Memory 3"></div>
+    <div class="slide-wrapper"><img src="Screenshot_2020-06-17-14-58-07.jpg" alt="Memory 4"></div>
+    <div class="slide-wrapper"><img src="IMG-20200512-WA0266.jpg" alt="Memory 5"></div>
+    <div class="slide-wrapper"><img src="Snapchat-2046197861.jpg" alt="Memory 6"></div>
+  </div>
+
+  <iframe src="player.html" allow="autoplay" style="display:none;" id="musicPlayer"></iframe>
+
+  <!-- Sparkles -->
+  <script>
+    // Sparkles: reduced to 40 for better mobile performance
+    for (let i = 0; i < 40; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.top = Math.random() * 100 + "vh";
+      star.style.left = Math.random() * 100 + "vw";
+      star.style.animationDelay = Math.random() * 3 + "s";
+      document.body.appendChild(star);
+    }
+
+    // Auto slideshow
+    const slides = document.querySelectorAll('.slide-wrapper');
+    let current = 0;
+    function showNextSlide() {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }
+    setInterval(showNextSlide, 4000);
+  </script>
+
+  <div class="signature">With love, Kusuma 💖</div>
+
+</body>
+</html>

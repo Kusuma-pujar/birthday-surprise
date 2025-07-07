@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎁 Birthday Surprise</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at top left, #ffd6e7, #ffe9ec);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+      color: #333;
+    }
+
+    .container {
+      background: white;
+      padding: 3rem;
+      border-radius: 25px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 2s ease-out;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #ff4081;
+      margin-bottom: 1rem;
+      animation: bounceIn 2s;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    button {
+      padding: 15px 35px;
+      font-size: 1.2rem;
+      background: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px #ff80ab;
+      animation: pulse 2s infinite;
+    }
+
+    button:hover {
+      background: #e73370;
+      box-shadow: 0 0 30px #ff4081;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px #ff4081; }
+      50% { box-shadow: 0 0 30px #ff4081; }
+      100% { box-shadow: 0 0 10px #ff4081; }
+    }
+
+    @keyframes bounceIn {
+      0% { transform: translateY(-50px); opacity: 0; }
+      60% { transform: translateY(10px); opacity: 1; }
+      100% { transform: translateY(0); }
+    }
+
+    canvas#confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>A Surprise Awaits!🎁  </h1>
+    <p>Click the button below to unlock your surprise🥳</p>
+    <button onclick="goToWish()">🎉 Open Surprise 🎉</button>
+  </div>
+
+  <iframe src="player.html" allow="autoplay" style="display:none;" id="musicPlayer"></iframe>
+
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <script src="script.js"></script>
+  <script>
+    function goToWish() {
+      window.location.href = "message.html"; // goes to cake first
+    }
+  </script>
+  
+</body>
+</html>
